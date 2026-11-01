@@ -4,6 +4,7 @@
 <meta name="theme-color" content="#0e1013">
 <title>DuoUp – Find your BGMI & Free Fire partner</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<link rel="icon" href="assets/icon.png"><link rel="apple-touch-icon" href="assets/icon.png">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Sora:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0e1013;--s1:#171a1f;--s2:#1f242b;--bd:#2b313a;--tx:#f3ede4;--mu:#9a9fa8;--ac:#ff7a59;--ac2:#f2c46d;--sg:#7fb69e;--btx:#1b0e09;--tp:rgba(14,16,19,.82);--bnb:rgba(23,26,31,.9);--h1:#2a1d19;--gl:color-mix(in srgb,var(--ac) 42%,transparent);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -37,7 +38,7 @@ h1{font-size:clamp(38px,8vw,64px);line-height:1.05;font-weight:800;margin:16px 0
 @keyframes up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
 .vis{position:relative;height:340px}
 .orb{position:absolute;inset:40px;margin:auto;width:230px;height:230px;border-radius:50%;background:conic-gradient(from 0deg,var(--ac),var(--ac2),var(--sg),var(--ac));animation:spin 14s linear infinite;filter:drop-shadow(0 0 40px var(--gl))}
-.orb::after{content:"🎮";position:absolute;inset:14px;background:var(--bg);border-radius:50%;display:grid;place-items:center;font-size:84px;animation:spin 14s linear infinite reverse}
+.orb::after{content:"";position:absolute;inset:14px;background:var(--bg) url(assets/icon.png) center/54% no-repeat;border-radius:50%;animation:spin 14s linear infinite reverse}
 @keyframes spin{to{transform:rotate(360deg)}}
 .fc{position:absolute;background:var(--s2);border:1px solid var(--bd);border-radius:16px;padding:12px 16px;display:flex;flex-direction:column;font-size:14px;box-shadow:0 18px 40px rgba(0,0,0,.3);animation:fl 5s ease-in-out infinite}
 .fc small{color:var(--mu)}.c1{top:10px;left:0}.c2{top:130px;right:0;animation-delay:-1.6s}.c3{bottom:6px;left:30px;animation-delay:-3s}
@@ -108,13 +109,13 @@ footer{padding:30px 0 50px;text-align:center;color:var(--mu);font-size:13px}
 .ag{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}.ag .pl{margin:0}
 .bar{height:10px;background:var(--s2);border-radius:8px;overflow:hidden;margin-top:4px}.bar i{display:block;height:100%;background:var(--ac);box-shadow:0 0 12px var(--gl);transition:.6s}
 .toast{position:fixed;bottom:calc(92px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:10px 18px;border-radius:22px;font-size:14px;font-weight:600;z-index:90;animation:up .3s;max-width:90vw;text-align:center}
-.tgs{display:flex;gap:6px;padding:10px 18px 0}.tgs i{width:54px;height:54px;border-radius:12px;background:var(--s2) center/cover}.sk{height:420px;border-radius:26px;background:linear-gradient(110deg,var(--s1) 30%,var(--s2) 50%,var(--s1) 70%) 0 0/250% 100%;animation:sh 1.6s linear infinite}.btn:disabled{cursor:wait}.cfgb{position:fixed;top:0;left:0;right:0;z-index:99;background:#e5484d;color:#fff;font-size:13px;text-align:center;padding:8px 12px}
+.tgs{display:flex;gap:6px;padding:10px 18px 0}.tgs i{width:54px;height:54px;border-radius:12px;background:var(--s2) center/cover}.sk{height:420px;border-radius:26px;background:linear-gradient(110deg,var(--s1) 30%,var(--s2) 50%,var(--s1) 70%) 0 0/250% 100%;animation:sh 1.6s linear infinite}.logo{height:30px;width:auto;display:block}.ob>.logo{height:34px;margin-bottom:6px}.logo-l{display:none}:root[data-theme=light] .logo-d{display:none}:root[data-theme=light] .logo-l{display:block}.btn:disabled{cursor:wait}.cfgb{position:fixed;top:0;left:0;right:0;z-index:99;background:#e5484d;color:#fff;font-size:13px;text-align:center;padding:8px 12px}
 </style></head><body>
 <div id="root"></div><div id="ov"></div><input type="file" id="fi" accept="image/*" style="position:fixed;left:-999px;opacity:0" onchange="onPh(this)">
 <script>
 const $=s=>document.querySelector(s),T=[];
 /* ===== CONFIG: paste your Supabase values (Project Settings > API) ===== */
-const CFG={url:"https://kkccvcreilwfukedrjpj.supabase.co",key:"sb_publishable_FRA4ZAJWd5JlrAWtil21iw_FfuuvdEk"},PRICE={Premium:99,Max:199};
+const CFG={url:"PASTE_SUPABASE_URL",key:"PASTE_SUPABASE_ANON_KEY"},PRICE={Premium:99,Max:199};
 const CFG_OK=!CFG.url.startsWith("PASTE"),SB=CFG_OK?window.supabase.createClient(CFG.url,CFG.key):null;
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const LANGS=["Hindi","English","Bengali","Marathi","Telugu","Tamil","Gujarati","Urdu","Kannada","Odia","Malayalam","Punjabi","Assamese","Maithili","Santali","Kashmiri","Nepali","Sindhi","Konkani","Dogri","Manipuri","Bodo","Sanskrit"];
@@ -133,17 +134,15 @@ setTheme(matchMedia("(prefers-color-scheme: light)").matches?"light":"ember");
 function toast(t){document.querySelector(".toast")?.remove();const d=document.createElement("div");d.className="toast";d.textContent=t;document.body.append(d);setTimeout(()=>d.remove(),2400)}
 function ov(h,sheet){$("#ov").innerHTML=h?`<div class="back ${sheet?"sh":""}" onclick="if(event.target==this)ov()"><div class="modal">${h}</div></div>`:""}
 const chip=(t,on,fn)=>`<button class="chip ${on?"on":""}" onclick="${fn}">${t}</button>`;
-let AC,MG,MT;
-function startMusic(){if(S.mOn)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();AC.resume();MG=AC.createGain();MG.gain.value=0;MG.connect(AC.destination);MG.gain.linearRampToValueAtTime(.2,AC.currentTime+2.5)}catch(e){return}
- S.mOn=true;const CH=[[220,261.6,329.6],[174.6,220,261.6],[261.6,329.6,392],[196,246.9,293.7]];let k=0;
- const nt=(f,d,ty,v)=>{const t=AC.currentTime,o=AC.createOscillator(),g=AC.createGain(),fl=AC.createBiquadFilter();fl.type="lowpass";fl.frequency.value=1100;o.type=ty;o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.06);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(fl);fl.connect(g);g.connect(MG);o.start(t);o.stop(t+d+.1)};
- MT=setInterval(()=>{const c=CH[(k>>3)%4];if(k%8==0)c.forEach(f=>nt(f/2,4.4,"triangle",.14));nt(c[k%3]*2,1,"sine",.1);k++},500)}
-function stopMusic(){clearInterval(MT);S.mOn=false;try{MG.gain.linearRampToValueAtTime(0,AC.currentTime+.6)}catch(e){}}
+const BGM=new Audio("assets/music.mp3");BGM.loop=true;BGM.preload="auto";BGM.volume=0;let MF;
+const fade=(to,ms,done)=>{clearInterval(MF);const from=BGM.volume,t0=Date.now();MF=setInterval(()=>{const k=Math.min(1,(Date.now()-t0)/ms);BGM.volume=from+(to-from)*k;if(k>=1){clearInterval(MF);done&&done()}},50)};
+function startMusic(){if(S.mOn)return;S.mOn=true;BGM.play().then(()=>fade(.5,2000)).catch(()=>{S.mOn=false})}
+function stopMusic(){S.mOn=false;fade(0,500,()=>BGM.pause())}
 function tgMusic(){S.music=!S.music;S.music?startMusic():stopMusic();$("#mb").textContent=S.music?"♫ Music on":"♫ Music off"}
 function clr(){T.splice(0).forEach(clearInterval)}
 function go(s){S.screen=s;if(s!="land"){stopMusic();clr()}ov();render()}
 function landing(){
-$("#root").innerHTML=`<div class="top"><div class="wrap"><div class="lg">Duo<i>Up</i></div><button class="mus" id="mb" onclick="tgMusic()">${S.music?"♫ Music on":"♫ Music off"}</button><button class="ghost" onclick="openAuth(0)">Log in</button><button class="btn" style="padding:11px 18px" onclick="openAuth(1)">Sign up</button></div></div>
+$("#root").innerHTML=`<div class="top"><div class="wrap"><div class="lg">${LOGO}</div><button class="mus" id="mb" onclick="tgMusic()">${S.music?"♫ Music on":"♫ Music off"}</button><button class="ghost" onclick="openAuth(0)">Log in</button><button class="btn" style="padding:11px 18px" onclick="openAuth(1)">Sign up</button></div></div>
 <div class="wrap"><div class="hero"><div><span class="bdg">For BGMI & Free Fire players</span>
 <h1>Find your next <span id="rot">duo partner</span></h1>
 <p class="sub">Meet players who match your game, rank, language and vibe. Pick friendship, a squad, a duo or something more, and chat the moment you match.</p>
@@ -166,6 +165,7 @@ document.querySelectorAll(".rv").forEach(e=>io.observe(e));
 if(S.music&&!S.mOn){const f=()=>{if(S.screen=="land"&&S.music)startMusic();document.removeEventListener("pointerdown",f)};document.addEventListener("pointerdown",f)}}
 const safe=u=>/^https:\/\/[\w.-]+\/storage\/v1\/object\/public\/photos\/[\w\/.-]+$/.test(u||"")?u:"";
 const avs=(n,ph)=>ph?`background:url('${ph}') center/cover`:bg(n||"x"),ini=(n,ph)=>ph?"":esc((n||"?")[0].toUpperCase());
+const LOGO='<img class="logo logo-d" src="assets/logo.png" alt="DuoUp"><img class="logo logo-l" src="assets/logo-light.png" alt="">';
 const btn=x=>{const b=document.querySelector(".modal .btn");if(b){b.disabled=!!x;b.style.opacity=x?.6:1}};
 /* onboarding */
 function pick(k,v){S.u[k]=v;if(k=="pl")S.u.ol=S.u.ol.filter(x=>x!=v);S.screen=="onb"?onb():view()}
@@ -180,7 +180,7 @@ function onb(a){const u=S.u,st=[
 {q:"Who would you like to meet?",ok:()=>u.interest,b:["Male","Female","Both"].map(x=>chip(x,u.interest==x,`pick('interest','${x}')`)).join("")},
 {q:"Which languages do you speak?",ok:()=>u.pl,b:lchips()},
 {q:"Which game do you play?",s:"Add your in-game ID so teammates can find you.",ok:gamesOk,b:gchips()+idbox()}][S.step];
-$("#root").innerHTML=`<div class="ob"><div class="pr"><i style="width:${(S.step+1)/5*100}%"></i></div><div class="${a?"sc":""}"><h2 style="font-size:28px">${st.q}</h2><p class="mu">${st.s||""}</p><div style="margin-top:14px">${st.b}</div></div><button class="btn w" style="margin-top:24px" onclick="nx()">${S.step==4?"Finish":"Continue"}</button>${S.step?`<button class="ghost w" style="margin-top:10px;border:0" onclick="S.step--;onb(1)">Back</button>`:""}</div>`;S._ok=st.ok}
+$("#root").innerHTML=`<div class="ob">${LOGO}<div class="pr"><i style="width:${(S.step+1)/5*100}%"></i></div><div class="${a?"sc":""}"><h2 style="font-size:28px">${st.q}</h2><p class="mu">${st.s||""}</p><div style="margin-top:14px">${st.b}</div></div><button class="btn w" style="margin-top:24px" onclick="nx()">${S.step==4?"Finish":"Continue"}</button>${S.step?`<button class="ghost w" style="margin-top:10px;border:0" onclick="S.step--;onb(1)">Back</button>`:""}</div>`;S._ok=st.ok}
 const IC={d:'<circle cx="12" cy="12" r="10"/><path d="m16 8-2 6-6 2 2-6z"/>',i:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',x:'<path d="m12 2 3 7 7 .6-5.3 4.7 1.6 7.2-6.3-3.7-6.3 3.7 1.6-7.2L2 9.6 9 9z"/>',p:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>'};
 const NM={d:"Discover",i:"Inbox",x:"Premium",p:"My profile"};
 const DOCS={privacy:["Privacy Policy",[["What we collect","Your name, date of birth, email, photos, bio, game IDs, language and match preferences, and the messages you send in DuoUp."],["How we use it","To run your account, show you relevant players, enable chat, keep the community safe and improve the app."],["What others can see","Your nickname, age, photos, bio and game details appear on your profile. Your in-game IDs are shared only after a match."],["Teens","DuoUp is for ages 13 and up. Players under 18 can’t use dating features and are only shown players in their own age group."],["Your control","You can edit your profile, deactivate or permanently delete your account from Settings at any time."],["Contact","Questions about your data? Use Contact us in the menu."]]],
@@ -237,7 +237,7 @@ function subscribeRT(){if(RT)return;RT=SB.channel("duoup")
 const nav=()=>Object.keys(NM).map(k=>`<button class="${S.tab==k?"on":""}" onclick="tab('${k}')"><svg viewBox="0 0 24 24">${IC[k]}</svg>${NM[k]}${k=="i"&&S.unread?`<span class="dt">${S.unread}</span>`:""}</button>`).join("");
 const refreshNav=()=>{const n=document.querySelector(".bn div");if(n)n.innerHTML=nav()};
 function tab(k){S.tab=k;S.open=null;if(k=="i"){S.unread=0;loadMatches().then(()=>S.tab=="i"&&S.open==null&&view())}if(k=="x")loadLiked();app()}
-function app(){S.open=null;$("#root").innerHTML=`<div class="app"><div class="tb"><h2 class="lg">${S.tab=="d"?"Duo<i>Up</i>":NM[S.tab]}</h2>${S.tab=="d"?`<span class="pill">${S.tier?"♾ Unlimited":"♥ "+S.used+"/20"}</span><button class="pill" onclick="filt()">Filters${Object.values(S.F).some(x=>x)?" •":""}</button>`:""}<button class="pill" onclick="menu()" aria-label="Menu">☰</button></div><div id="vw"></div></div><div class="bn"><div>${nav()}</div></div>`;view(1);if(S.tab=="d"&&!S.dd){S.dd=1;loadDeck()}}
+function app(){S.open=null;$("#root").innerHTML=`<div class="app"><div class="tb"><h2 class="lg">${S.tab=="d"?LOGO:NM[S.tab]}</h2>${S.tab=="d"?`<span class="pill">${S.tier?"♾ Unlimited":"♥ "+S.used+"/20"}</span><button class="pill" onclick="filt()">Filters${Object.values(S.F).some(x=>x)?" •":""}</button>`:""}<button class="pill" onclick="menu()" aria-label="Menu">☰</button></div><div id="vw"></div></div><div class="bn"><div>${nav()}</div></div>`;view(1);if(S.tab=="d"&&!S.dd){S.dd=1;loadDeck()}}
 const bub=m=>`<div class="m ${m.sender_id==S.uid?"me":""}">${esc(m.body)}</div>`;
 function view(q){const v=$("#vw");if(!v)return;v.className="pad"+(q?" stg":"");
 if(S.tab=="d"){const p=S.deck[0];v.innerHTML=(minor()?`<p class="mu" style="font-size:13px;margin:0 0 10px">🛡️ Teen mode: friendship and squad only, players your age.</p>`:"")+(p?`<div class="pc" id="pc"><div class="ph" style="height:300px;${avs(p.n,p.ph[0])}">${ini(p.n,p.ph[0])}</div>${p.ph.length>1?`<div class="tgs">${p.ph.slice(1,5).map(u=>`<i style="background-image:url('${u}')"></i>`).join("")}</div>`:""}<div class="pb"><h2>${esc(p.n)}${p.v?" ✔":""}, ${p.a}</h2><div class="mu">${[p.c,p.gm,p.r,p.ro].filter(Boolean).map(esc).join(" · ")}</div>${p.b?`<p style="line-height:1.5">${esc(p.b)}</p>`:""}${p.i.map(x=>`<span class="tg">🎯 ${esc(x)}</span>`).join("")}${p.l.map(x=>`<span class="tg">🗣️ ${esc(x)}</span>`).join("")}<div style="margin-top:12px"><a style="color:var(--mu);font-weight:500;font-size:13px" onclick="rep('${p.id}')">Report or block</a></div></div></div><div class="act"><button class="rb" onclick="act(0)">✕</button><button class="rb y" onclick="act(1)">♥</button></div>`:S.dl?`<div class="sk"></div>`:`<div class="pl" style="text-align:center"><h3>No one new right now</h3><p class="mu">Try changing your filters, or check back soon as more players join.</p><button class="ghost" onclick="filt()">Open filters</button></div>`)}
