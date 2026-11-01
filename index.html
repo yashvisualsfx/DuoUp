@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0e1013">
+<title>DuoUp – Find your BGMI & Free Fire partner</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Sora:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e1013;--s1:#171a1f;--s2:#1f242b;--bd:#2b313a;--tx:#f3ede4;--mu:#9a9fa8;--ac:#ff7a59;--ac2:#f2c46d;--sg:#7fb69e;--btx:#1b0e09;--tp:rgba(14,16,19,.82);--bnb:rgba(23,26,31,.9);--h1:#2a1d19;--gl:color-mix(in srgb,var(--ac) 42%,transparent);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-theme=light]{color-scheme:light;--bg:#f6f1ea;--s1:#fff;--s2:#f0e9df;--bd:#e2d8ca;--tx:#1d1a17;--mu:#6f675d;--ac:#e8603c;--ac2:#c98a1a;--sg:#3f8a6c;--btx:#fff;--tp:rgba(246,241,234,.85);--bnb:rgba(255,255,255,.93);--h1:#ffe6dc}
+:root[data-theme=ocean]{--bg:#0b1220;--s1:#121b2d;--s2:#1a2539;--bd:#26344d;--tx:#e8eef8;--mu:#8fa0ba;--ac:#4aa3ff;--ac2:#7fd1c7;--btx:#06121f;--tp:rgba(11,18,32,.82);--bnb:rgba(18,27,45,.9);--h1:#12263f}
+:root[data-theme=forest]{--bg:#0c1210;--s1:#141d19;--s2:#1b2722;--bd:#28362f;--tx:#e9f1ec;--mu:#93a89c;--ac:#6fcf97;--ac2:#e0c372;--btx:#06150d;--tp:rgba(12,18,16,.82);--bnb:rgba(20,29,25,.9);--h1:#17301f}
+html{color-scheme:dark;height:100%}:root[data-theme=light]{color-scheme:light}*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:"DM Sans",system-ui,sans-serif;overflow-x:hidden;min-height:100%;transition:background .4s,color .4s}
+h1,h2,h3,.lg{font-family:Sora,"DM Sans",system-ui,sans-serif;margin:0}
+button{font:inherit;color:inherit;cursor:pointer}a{color:var(--ac);cursor:pointer;font-weight:700}
+.mu{color:var(--mu)}
+.btn{background:var(--ac);color:var(--btx);border:0;border-radius:14px;padding:14px 22px;font-weight:700;font-size:16px;transition:transform .15s,box-shadow .3s;box-shadow:0 6px 22px var(--gl)}
+.btn:active{transform:scale(.96)}.btn.w{width:100%}
+.btn.glow{animation:gp 3s ease-in-out infinite}@keyframes gp{50%{box-shadow:0 8px 40px var(--gl),0 0 70px var(--gl)}}
+.ghost{background:transparent;border:1px solid var(--bd);border-radius:14px;padding:12px 18px;font-weight:600;transition:.2s}.ghost:active{transform:scale(.97);background:var(--s2)}
+.sm{padding:8px 12px;font-size:13px;border-radius:10px}
+.wrap{max-width:1000px;margin:auto;padding:0 20px}
+.top{position:sticky;top:0;z-index:9;background:var(--tp);backdrop-filter:blur(14px);padding-top:env(safe-area-inset-top,0px)}
+.top .wrap{display:flex;align-items:center;gap:8px;height:60px}
+.lg{font-weight:800;font-size:22px;margin-right:auto}.lg i{color:var(--ac);font-style:normal}
+.mus{border:1px solid var(--bd);background:var(--s1);border-radius:20px;padding:7px 12px;font-size:13px}
+.hero{position:relative;padding:44px 0 30px;display:grid;gap:30px}.hero>*{position:relative}
+.hero::before{content:"";position:absolute;width:460px;height:460px;left:-140px;top:-80px;background:radial-gradient(closest-side,var(--gl),transparent);opacity:.4;pointer-events:none;filter:blur(24px);animation:br 6s ease-in-out infinite}
+@keyframes br{50%{opacity:.18;transform:scale(1.12)}}
+@media(min-width:800px){.hero{grid-template-columns:1.1fr .9fr;align-items:center;padding:80px 0}}
+.bdg{display:inline-block;border:1px solid var(--bd);background:var(--s1);border-radius:20px;padding:6px 14px;font-size:13px;color:var(--ac2);animation:up .8s both}
+h1{font-size:clamp(38px,8vw,64px);line-height:1.05;font-weight:800;margin:16px 0;animation:up .8s .1s both}
+#rot{color:var(--ac);display:inline-block;transition:.35s;text-shadow:0 0 34px var(--gl)}#rot.o{opacity:0;transform:translateY(12px)}
+.sub{font-size:18px;color:var(--mu);line-height:1.55;max-width:520px;animation:up .8s .2s both}
+.ctas{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px;animation:up .8s .3s both}
+@keyframes up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.vis{position:relative;height:340px}
+.orb{position:absolute;inset:40px;margin:auto;width:230px;height:230px;border-radius:50%;background:conic-gradient(from 0deg,var(--ac),var(--ac2),var(--sg),var(--ac));animation:spin 14s linear infinite;filter:drop-shadow(0 0 40px var(--gl))}
+.orb::after{content:"🎮";position:absolute;inset:14px;background:var(--bg);border-radius:50%;display:grid;place-items:center;font-size:84px;animation:spin 14s linear infinite reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+.fc{position:absolute;background:var(--s2);border:1px solid var(--bd);border-radius:16px;padding:12px 16px;display:flex;flex-direction:column;font-size:14px;box-shadow:0 18px 40px rgba(0,0,0,.3);animation:fl 5s ease-in-out infinite}
+.fc small{color:var(--mu)}.c1{top:10px;left:0}.c2{top:130px;right:0;animation-delay:-1.6s}.c3{bottom:6px;left:30px;animation-delay:-3s}
+@keyframes fl{50%{transform:translateY(-14px)}}
+.mq{overflow:hidden;border-block:1px solid var(--bd);padding:14px 0;background:var(--s1)}
+.mqt{display:flex;gap:40px;white-space:nowrap;width:max-content;animation:mq 22s linear infinite;font-family:Sora;font-weight:700;color:var(--mu)}
+@keyframes mq{to{transform:translateX(-50%)}}
+section{padding:64px 0}h2{font-size:clamp(28px,5vw,40px);margin-bottom:10px}
+.grid{display:grid;gap:14px;margin-top:28px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.fe{background:var(--s1);border:1px solid var(--bd);border-radius:20px;padding:22px;transition:transform .3s,box-shadow .3s,border-color .3s}
+.fe:hover{transform:translateY(-4px);border-color:var(--ac);box-shadow:0 14px 40px -14px var(--gl)}
+.fe b{font-size:28px;display:block;margin-bottom:10px}.fe h3{font-size:18px;margin-bottom:6px}.fe p{margin:0;color:var(--mu);line-height:1.5;font-size:15px}
+.num{font-family:Sora;font-size:46px;font-weight:800;color:var(--ac2);text-shadow:0 0 28px var(--gl)}.st{text-align:center}
+.rv{opacity:0;transform:translateY(26px);transition:.8s cubic-bezier(.2,.8,.2,1)}.rv.in{opacity:1;transform:none}
+.sl{overflow:hidden;border-radius:22px;margin-top:26px}.tr{display:flex;transition:transform .7s cubic-bezier(.3,.8,.2,1)}
+.rvw{min-width:100%;background:var(--s1);border:1px solid var(--bd);padding:30px 24px;border-radius:22px}
+.rvw p{font-size:20px;line-height:1.5;margin:0 0 14px;font-family:Sora;font-weight:500}
+.dots{display:flex;gap:6px;justify-content:center;margin-top:14px}.dots i{width:8px;height:8px;border-radius:9px;background:var(--bd);transition:.3s}.dots i.on{width:24px;background:var(--ac);box-shadow:0 0 10px var(--gl)}
+.cta{background:linear-gradient(135deg,var(--h1),var(--s1));border:1px solid var(--bd);border-radius:28px;padding:44px 24px;text-align:center;box-shadow:0 0 90px -34px var(--gl)}
+footer{padding:30px 0 50px;text-align:center;color:var(--mu);font-size:13px}
+.back{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);z-index:50;display:flex;align-items:center;justify-content:center;padding:18px;animation:fd .25s}
+.back.sh{align-items:flex-end;padding:0}
+@keyframes fd{from{opacity:0}}@keyframes pop{from{transform:translateY(40px) scale(.96);opacity:0}}
+.modal{background:var(--s1);border:1px solid var(--bd);border-radius:24px;padding:26px;width:100%;max-width:420px;animation:pop .35s cubic-bezier(.2,.9,.3,1.2);max-height:88vh;overflow:auto;box-shadow:0 0 70px -30px var(--gl)}
+.sh .modal{max-width:520px;border-radius:26px 26px 0 0;padding-bottom:calc(26px + env(safe-area-inset-bottom,0px))}
+.modal h3{font-size:22px;margin-bottom:6px}.modal h4{margin:16px 0 4px;font-family:Sora}.modal p{line-height:1.55}
+.i{width:100%;background:var(--s2);border:1px solid var(--bd);color:var(--tx);border-radius:14px;padding:14px;font:inherit;font-size:16px;margin-top:10px;outline:0;transition:.2s}
+.i:focus{border-color:var(--ac);box-shadow:0 0 0 4px var(--gl)}textarea.i{resize:vertical;min-height:92px}
+.sw{text-align:center;color:var(--mu);font-size:14px;margin:14px 0 0}
+.app{max-width:520px;margin:auto;min-height:100vh;padding-bottom:96px}
+.tb{display:flex;align-items:center;gap:8px;padding:16px 18px 8px}.tb h2{font-size:24px;margin:0;margin-right:auto}
+.pill{background:var(--s2);border:1px solid var(--bd);border-radius:20px;padding:7px 12px;font-size:13px;font-weight:700}
+.pad{padding:8px 16px}.stg>*{animation:up .5s both}.stg>*:nth-child(2){animation-delay:.06s}.stg>*:nth-child(3){animation-delay:.12s}.stg>*:nth-child(4){animation-delay:.18s}.stg>*:nth-child(n+5){animation-delay:.24s}
+.bn{position:fixed;bottom:0;left:0;right:0;z-index:20;display:flex;justify-content:center;background:var(--bnb);backdrop-filter:blur(18px);border-top:1px solid var(--bd);padding-bottom:env(safe-area-inset-bottom,0px)}
+.bn div{display:flex;width:100%;max-width:520px}
+.bn button{flex:1;background:none;border:0;padding:10px 0 8px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;color:var(--mu);position:relative;transition:.25s}
+.bn button.on{color:var(--ac)}.bn button.on svg{transform:translateY(-2px) scale(1.14);filter:drop-shadow(0 0 7px var(--gl))}
+.bn svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:.3s cubic-bezier(.3,1.5,.5,1)}
+.dt{position:absolute;top:6px;left:56%;background:var(--ac);color:var(--btx);font-size:10px;font-weight:800;border-radius:9px;padding:1px 6px}
+.pc{background:var(--s1);border:1px solid var(--bd);border-radius:26px;overflow:hidden;transition:transform .28s,opacity .28s;box-shadow:0 20px 50px -26px var(--gl)}
+.pc.ol{transform:translateX(-120%) rotate(-12deg);opacity:0}.pc.or{transform:translateX(120%) rotate(12deg);opacity:0}
+.ph{height:230px;display:grid;place-items:center;font-size:96px}
+.pb{padding:18px}.pb h2{font-size:26px}
+.tg{display:inline-block;background:var(--s2);border:1px solid var(--bd);border-radius:20px;padding:4px 11px;font-size:12.5px;margin:6px 6px 0 0}
+.act{display:flex;justify-content:center;gap:26px;margin:18px 0}
+.rb{width:68px;height:68px;border-radius:50%;border:1px solid var(--bd);background:var(--s1);font-size:26px;transition:.18s}.rb:active{transform:scale(.86)}.rb.y{background:var(--ac);color:var(--btx);border:0;box-shadow:0 0 30px var(--gl)}
+.chip{border:1px solid var(--bd);background:var(--s2);border-radius:22px;padding:10px 16px;margin:0 8px 8px 0;font-size:15px;transition:.2s}.chip:active{transform:scale(.93)}
+.chip.on{background:var(--ac);color:var(--btx);border-color:var(--ac);font-weight:700;box-shadow:0 4px 16px var(--gl)}
+.lb{font-size:12px;color:var(--mu);margin:16px 0 8px;text-transform:uppercase;letter-spacing:.06em}
+.pr{height:5px;background:var(--s2);border-radius:5px;overflow:hidden;margin:20px 0}.pr i{display:block;height:100%;background:var(--ac);transition:.5s cubic-bezier(.3,.8,.2,1);box-shadow:0 0 14px var(--gl)}
+.ob{max-width:480px;margin:auto;padding:24px 20px}.sc{animation:sl .4s cubic-bezier(.2,.8,.2,1)}@keyframes sl{from{opacity:0;transform:translateX(28px)}}
+.soon{margin-top:16px;border:1.5px dashed var(--bd);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:4px;background:linear-gradient(110deg,transparent 30%,var(--s2) 50%,transparent 70%) 0 0/250% 100%;animation:sh 3.5s linear infinite}.soon span{color:var(--mu);font-size:13px}
+@keyframes sh{to{background-position:-150% 0}}
+.li{display:flex;gap:14px;align-items:center;background:var(--s1);border:1px solid var(--bd);border-radius:18px;padding:14px;margin-bottom:10px;transition:.2s}.li:active{transform:scale(.98)}
+.av{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-size:28px;flex:none}
+.ms{height:52vh;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:10px 2px}
+.m{max-width:78%;padding:10px 14px;border-radius:18px;background:var(--s2);align-self:flex-start;font-size:15px;animation:up .3s}.m.me{background:var(--ac);color:var(--btx);align-self:flex-end}
+.pl{border-radius:22px;border:1px solid var(--bd);background:var(--s1);padding:20px;margin-bottom:12px}
+.pl.hot{border-color:var(--ac);background:linear-gradient(160deg,var(--h1),var(--s1));box-shadow:0 0 44px -14px var(--gl)}
+.pl ul{padding-left:18px;color:var(--mu);line-height:1.8;margin:10px 0}.pz{font-family:Sora;font-size:30px;font-weight:800}
+.bl{display:grid;grid-template-columns:1fr 1fr;gap:10px}.bl div{background:var(--s2);border-radius:18px;padding:16px;text-align:center;font-size:44px}.bl.lk div{filter:blur(9px)}.bl small{display:block;font-size:12px}
+.pg3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.ph3{aspect-ratio:3/4;border-radius:14px;background:var(--s2) center/cover;border:1px solid var(--bd);position:relative;animation:up .4s both}
+.ph3.add{border:1.5px dashed var(--ac);font-size:30px;color:var(--ac)}.ph3.off{opacity:.35}
+.ph3>button{position:absolute;bottom:6px;width:30px;height:30px;border-radius:50%;border:0;background:rgba(0,0,0,.62);color:#fff;font-size:14px}.ph3>.r{left:6px}.ph3>.x{right:6px}
+.ph3 em{position:absolute;top:6px;left:6px;background:var(--ac);color:var(--btx);font-style:normal;font-size:10px;font-weight:800;border-radius:8px;padding:2px 7px}
+.mn button{display:flex;gap:14px;align-items:center;width:100%;background:var(--s2);border:1px solid var(--bd);border-radius:16px;padding:14px;margin-top:8px;font-size:16px;text-align:left}
+.ag{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}.ag .pl{margin:0}
+.bar{height:10px;background:var(--s2);border-radius:8px;overflow:hidden;margin-top:4px}.bar i{display:block;height:100%;background:var(--ac);box-shadow:0 0 12px var(--gl);transition:.6s}
+.toast{position:fixed;bottom:calc(92px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:10px 18px;border-radius:22px;font-size:14px;font-weight:600;z-index:90;animation:up .3s;max-width:90vw;text-align:center}
+.tgs{display:flex;gap:6px;padding:10px 18px 0}.tgs i{width:54px;height:54px;border-radius:12px;background:var(--s2) center/cover}.sk{height:420px;border-radius:26px;background:linear-gradient(110deg,var(--s1) 30%,var(--s2) 50%,var(--s1) 70%) 0 0/250% 100%;animation:sh 1.6s linear infinite}.btn:disabled{cursor:wait}.cfgb{position:fixed;top:0;left:0;right:0;z-index:99;background:#e5484d;color:#fff;font-size:13px;text-align:center;padding:8px 12px}
+</style></head><body>
+<div id="root"></div><div id="ov"></div><input type="file" id="fi" accept="image/*" style="position:fixed;left:-999px;opacity:0" onchange="onPh(this)">
+<script>
+const $=s=>document.querySelector(s),T=[];
+/* ===== CONFIG: paste your Supabase values (Project Settings > API) ===== */
+const CFG={url:"https://kkccvcreilwfukedrjpj.supabase.co",key:"sb_publishable_FRA4ZAJWd5JlrAWtil21iw_FfuuvdEk"},PRICE={Premium:99,Max:199};
+const CFG_OK=!CFG.url.startsWith("PASTE"),SB=CFG_OK?window.supabase.createClient(CFG.url,CFG.key):null;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const LANGS=["Hindi","English","Bengali","Marathi","Telugu","Tamil","Gujarati","Urdu","Kannada","Odia","Malayalam","Punjabi","Assamese","Maithili","Santali","Kashmiri","Nepali","Sindhi","Konkani","Dogri","Manipuri","Bodo","Sanskrit"];
+const RANKS=["Bronze","Silver","Gold","Platinum","Diamond","Crown","Ace","Conqueror"];
+const THEMES=[["ember","Ember"],["light","Light"],["ocean","Ocean"],["forest","Forest"]];
+const ROLES=["Rusher","Sniper","IGL","Support","Fragger","Scout"];
+const nu=()=>({full:"",nick:"",dob:"",age:0,email:"",gender:"",intent:[],interest:"",pl:"",ol:[],games:"",rank:"",role:"",city:"",ids:{BGMI:"",FF:""},bio:"",photos:[],done:false});
+const S={screen:"land",tab:"d",step:0,u:nu(),uid:null,tier:"",isAdmin:false,used:0,deck:[],dl:false,dd:0,F:{gm:"",g:"",i:"",l:"",r:""},matches:[],msgs:{},open:null,unread:0,liked:{total:0,people:[]},music:true,mOn:false,at:"o",pi:0};
+const minor=()=>S.u.age>0&&S.u.age<18,INT=()=>minor()?["Duo partner","Squad","Friendship"]:["Duo partner","Squad","Friendship","Dating"];
+const dn=()=>S.u.nick||S.u.full.split(" ")[0]||"You",em=e=>e&&e.message||"Something went wrong. Please try again.";
+const hue=n=>[...n].reduce((a,c)=>a+c.charCodeAt(0),0)*37%360;
+const bg=n=>`background:linear-gradient(135deg,hsl(${hue(n)} 45% 32%),hsl(${(hue(n)+50)%360} 40% 22%))`;
+const ageOf=d=>{const b=new Date(d),n=new Date();let a=n.getFullYear()-b.getFullYear();if(n<new Date(n.getFullYear(),b.getMonth(),b.getDate()))a--;return a};
+function setTheme(t){document.documentElement.dataset.theme=t;S.theme=t}
+setTheme(matchMedia("(prefers-color-scheme: light)").matches?"light":"ember");
+function toast(t){document.querySelector(".toast")?.remove();const d=document.createElement("div");d.className="toast";d.textContent=t;document.body.append(d);setTimeout(()=>d.remove(),2400)}
+function ov(h,sheet){$("#ov").innerHTML=h?`<div class="back ${sheet?"sh":""}" onclick="if(event.target==this)ov()"><div class="modal">${h}</div></div>`:""}
+const chip=(t,on,fn)=>`<button class="chip ${on?"on":""}" onclick="${fn}">${t}</button>`;
+let AC,MG,MT;
+function startMusic(){if(S.mOn)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();AC.resume();MG=AC.createGain();MG.gain.value=0;MG.connect(AC.destination);MG.gain.linearRampToValueAtTime(.2,AC.currentTime+2.5)}catch(e){return}
+ S.mOn=true;const CH=[[220,261.6,329.6],[174.6,220,261.6],[261.6,329.6,392],[196,246.9,293.7]];let k=0;
+ const nt=(f,d,ty,v)=>{const t=AC.currentTime,o=AC.createOscillator(),g=AC.createGain(),fl=AC.createBiquadFilter();fl.type="lowpass";fl.frequency.value=1100;o.type=ty;o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.06);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(fl);fl.connect(g);g.connect(MG);o.start(t);o.stop(t+d+.1)};
+ MT=setInterval(()=>{const c=CH[(k>>3)%4];if(k%8==0)c.forEach(f=>nt(f/2,4.4,"triangle",.14));nt(c[k%3]*2,1,"sine",.1);k++},500)}
+function stopMusic(){clearInterval(MT);S.mOn=false;try{MG.gain.linearRampToValueAtTime(0,AC.currentTime+.6)}catch(e){}}
+function tgMusic(){S.music=!S.music;S.music?startMusic():stopMusic();$("#mb").textContent=S.music?"♫ Music on":"♫ Music off"}
+function clr(){T.splice(0).forEach(clearInterval)}
+function go(s){S.screen=s;if(s!="land"){stopMusic();clr()}ov();render()}
+function landing(){
+$("#root").innerHTML=`<div class="top"><div class="wrap"><div class="lg">Duo<i>Up</i></div><button class="mus" id="mb" onclick="tgMusic()">${S.music?"♫ Music on":"♫ Music off"}</button><button class="ghost" onclick="openAuth(0)">Log in</button><button class="btn" style="padding:11px 18px" onclick="openAuth(1)">Sign up</button></div></div>
+<div class="wrap"><div class="hero"><div><span class="bdg">For BGMI & Free Fire players</span>
+<h1>Find your next <span id="rot">duo partner</span></h1>
+<p class="sub">Meet players who match your game, rank, language and vibe. Pick friendship, a squad, a duo or something more, and chat the moment you match.</p>
+<div class="ctas"><button class="btn glow" onclick="openAuth(1)">Start now</button><button class="ghost" onclick="openAuth(1)">Create your account</button></div></div>
+<div class="vis"><div class="orb"></div><div class="fc c1"><b>🎯 Ishita</b><small>BGMI · Diamond · Support</small></div><div class="fc c2"><b>🎉 It’s a match!</b><small>Say hi and plan tonight’s game</small></div><div class="fc c3"><b>🗣️ Your language</b><small>Hindi · Tamil · Bengali +20</small></div></div></div></div>
+<div class="mq"><div class="mqt">${"<span>BGMI</span><span>•</span><span>FREE FIRE</span><span>•</span><span>DUOS</span><span>•</span><span>SQUADS</span><span>•</span><span>CHICKEN DINNER</span><span>•</span>".repeat(6)}</div></div>
+<div class="wrap"><section><h2 class="rv">Built for the lobby, not the swipe-and-forget.</h2><p class="mu rv">Everything is designed around how gamers actually find teammates.</p>
+<div class="grid">${[["🎛️","Smart filters","Filter by game, rank, language, intent and who you want to meet."],["💬","Instant inbox","Match first, then chat. Share your in-game ID only when you are ready."],["🌐","23 languages","Find teammates who speak yours. Choose one primary and many more."],["🧭","Intent first","Duo, squad, friendship or dating. Pick one or several."],["🛡️","Safer for teens","Players under 18 only see friendship and squad modes, with people in their own age group."],["🆓","Free to start","20 free likes every day. Upgrade only if you want more."]].map(f=>`<div class="fe rv"><b>${f[0]}</b><h3>${f[1]}</h3><p>${f[2]}</p></div>`).join("")}</div></section>
+<section><h2 class="rv">Three steps to Player 2</h2><div class="grid">${[["1","Create your profile","Tell us your game, in-game ID, languages and what you’re looking for."],["2","Discover players","Browse profiles that fit your filters and like the ones you click with."],["3","Match and play","Chat in your inbox, swap IDs and drop in together."]].map(f=>`<div class="fe rv"><div class="num">${f[0]}</div><h3>${f[1]}</h3><p>${f[2]}</p></div>`).join("")}</div></section>
+<section class="st"><div class="grid">${[[23,"Languages"],[2,"Games"],[4,"Intents"],[20,"Free likes a day"]].map(s=>`<div class="rv"><div class="num" data-n="${s[0]}">0</div><div class="mu">${s[1]}</div></div>`).join("")}</div></section>
+<section><h2 class="rv">What players say</h2>
+<div class="sl rv"><div class="tr" id="tr">${[["Found a duo who actually uses the mic. Our ranks climbed together.","Arjun Mehta · Diamond, BGMI"],["Filtering by language made it easy to find teammates who speak mine.","Kavya Nair · Gold, Free Fire"],["The teen-safe mode made it comfortable for my cousin to try.","Harsh Patel · Ace, BGMI"],["Finally an app that understands that gamers want a squad first.","Simran Kaur · Platinum, Free Fire"]].map(r=>`<div class="rvw"><p>“${r[0]}”</p><span class="mu">${r[1]}</span></div>`).join("")}</div></div><div class="dots" id="dots"><i></i><i></i><i></i><i></i></div><p class="mu" style="font-size:11px;text-align:center;margin-top:10px;opacity:.7">Preview reviews. Replace with real player reviews before public launch.</p></section>
+<section><div class="cta rv"><h2>Your next teammate is one tap away.</h2><p class="mu">Free to join. Takes under a minute.</p><button class="btn glow" style="margin-top:14px" onclick="openAuth(1)">Make your account now</button></div></section>
+<footer><a onclick="doc('privacy')" style="font-weight:500">Privacy Policy</a> · <a onclick="doc('terms')" style="font-weight:500">Terms &amp; Conditions</a> · <a onclick="contact()" style="font-weight:500">Contact us</a><br><br>© DuoUp · Play safe, be kind.<br>Not affiliated with KRAFTON or Garena.</footer></div>`;
+const W=["duo partner","squad mate","Player 2","chicken dinner crew"];let wi=0;
+T.push(setInterval(()=>{const r=$("#rot");if(!r)return;r.classList.add("o");setTimeout(()=>{wi=(wi+1)%4;r.textContent=W[wi];r.classList.remove("o")},350)},2400));
+let si=0;const dots=[...document.querySelectorAll("#dots i")],mv=()=>{$("#tr").style.transform=`translateX(-${si*100}%)`;dots.forEach((d,i)=>d.classList.toggle("on",i==si))};mv();T.push(setInterval(()=>{si=(si+1)%4;mv()},4200));
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;e.target.classList.add("in");const n=e.target.querySelector(".num[data-n]");if(n&&!n.d){n.d=1;const to=+n.dataset.n;let c=0;const t=setInterval(()=>{c++;n.textContent=c;if(c>=to)clearInterval(t)},1000/to|0||40)}io.unobserve(e.target)}),{threshold:.2});
+document.querySelectorAll(".rv").forEach(e=>io.observe(e));
+if(S.music&&!S.mOn){const f=()=>{if(S.screen=="land"&&S.music)startMusic();document.removeEventListener("pointerdown",f)};document.addEventListener("pointerdown",f)}}
+const safe=u=>/^https:\/\/[\w.-]+\/storage\/v1\/object\/public\/photos\/[\w\/.-]+$/.test(u||"")?u:"";
+const avs=(n,ph)=>ph?`background:url('${ph}') center/cover`:bg(n||"x"),ini=(n,ph)=>ph?"":esc((n||"?")[0].toUpperCase());
+const btn=x=>{const b=document.querySelector(".modal .btn");if(b){b.disabled=!!x;b.style.opacity=x?.6:1}};
+/* onboarding */
+function pick(k,v){S.u[k]=v;if(k=="pl")S.u.ol=S.u.ol.filter(x=>x!=v);S.screen=="onb"?onb():view()}
+function tgl(k,v){const o=S.u[k],i=o.indexOf(v);i<0?o.push(v):o.splice(i,1);S.screen=="onb"?onb():view()}
+const idbox=()=>{const g=S.u.games;return (g=="BGMI"||g=="Both"?`<div class="lb">BGMI ID</div><input class="i" style="margin:0" placeholder="Your BGMI character ID" value="${esc(S.u.ids.BGMI)}" oninput="S.u.ids.BGMI=this.value">`:"")+(g=="Free Fire"||g=="Both"?`<div class="lb">Free Fire UID</div><input class="i" style="margin:0" placeholder="Your Free Fire UID" value="${esc(S.u.ids.FF)}" oninput="S.u.ids.FF=this.value">`:"")+`<div class="soon"><b>🚀 More games coming soon</b><span>We’re adding more titles. Stay tuned.</span></div>`};
+const gamesOk=()=>{const u=S.u,g=u.games;return g&&((g=="Free Fire")||u.ids.BGMI.trim())&&((g=="BGMI")||u.ids.FF.trim())};
+const gchips=()=>["BGMI","Free Fire","Both"].map(x=>chip(x,S.u.games==x,`pick('games','${x}')`)).join("");
+const lchips=()=>`<div class="lb">Primary language</div>${LANGS.map(x=>chip(x,S.u.pl==x,`pick('pl','${x}')`)).join("")}<div class="lb">Also speak (pick any)</div>${LANGS.filter(x=>x!=S.u.pl).map(x=>chip(x,S.u.ol.includes(x),`tgl('ol','${x}')`)).join("")}`;
+function onb(a){const u=S.u,st=[
+{q:"How do you identify?",ok:()=>u.gender,b:["Male","Female","Other"].map(x=>chip(x,u.gender==x,`pick('gender','${x}')`)).join("")},
+{q:"What are you here for?",s:"Pick all that apply.",ok:()=>u.intent.length,b:INT().map(x=>chip(x,u.intent.includes(x),`tgl('intent','${x}')`)).join("")+(minor()?'<p class="mu" style="font-size:13px">Under 18: dating is switched off, and you’ll see players your age.</p>':"")},
+{q:"Who would you like to meet?",ok:()=>u.interest,b:["Male","Female","Both"].map(x=>chip(x,u.interest==x,`pick('interest','${x}')`)).join("")},
+{q:"Which languages do you speak?",ok:()=>u.pl,b:lchips()},
+{q:"Which game do you play?",s:"Add your in-game ID so teammates can find you.",ok:gamesOk,b:gchips()+idbox()}][S.step];
+$("#root").innerHTML=`<div class="ob"><div class="pr"><i style="width:${(S.step+1)/5*100}%"></i></div><div class="${a?"sc":""}"><h2 style="font-size:28px">${st.q}</h2><p class="mu">${st.s||""}</p><div style="margin-top:14px">${st.b}</div></div><button class="btn w" style="margin-top:24px" onclick="nx()">${S.step==4?"Finish":"Continue"}</button>${S.step?`<button class="ghost w" style="margin-top:10px;border:0" onclick="S.step--;onb(1)">Back</button>`:""}</div>`;S._ok=st.ok}
+const IC={d:'<circle cx="12" cy="12" r="10"/><path d="m16 8-2 6-6 2 2-6z"/>',i:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',x:'<path d="m12 2 3 7 7 .6-5.3 4.7 1.6 7.2-6.3-3.7-6.3 3.7 1.6-7.2L2 9.6 9 9z"/>',p:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>'};
+const NM={d:"Discover",i:"Inbox",x:"Premium",p:"My profile"};
+const DOCS={privacy:["Privacy Policy",[["What we collect","Your name, date of birth, email, photos, bio, game IDs, language and match preferences, and the messages you send in DuoUp."],["How we use it","To run your account, show you relevant players, enable chat, keep the community safe and improve the app."],["What others can see","Your nickname, age, photos, bio and game details appear on your profile. Your in-game IDs are shared only after a match."],["Teens","DuoUp is for ages 13 and up. Players under 18 can’t use dating features and are only shown players in their own age group."],["Your control","You can edit your profile, deactivate or permanently delete your account from Settings at any time."],["Contact","Questions about your data? Use Contact us in the menu."]]],
+terms:["Terms &amp; Conditions",[["Eligibility","You must be at least 13. Under-18 accounts are limited to friendship and squad features."],["Be respectful","No harassment, hate, threats, spam, scams, impersonation or sexual content involving minors. We may remove content and ban accounts that break these rules."],["Safety","Never share passwords, OTPs or money. Report anyone who makes you uncomfortable using Report or block."],["Premium","Premium plans are billed monthly and can be cancelled at any time. Benefits are described on the Premium page."],["Accounts","You can deactivate or delete your account in Settings. We may suspend accounts that violate these terms."],["Disclaimer","DuoUp is not affiliated with KRAFTON, Garena or any game publisher. BGMI and Free Fire are trademarks of their owners."]]]};
+function doc(k){const d=DOCS[k];ov(`<h3>${d[0]}</h3>${d[1].map(s=>`<h4>${s[0]}</h4><p class="mu" style="margin:0">${s[1]}</p>`).join("")}<p class="mu" style="font-size:12px;margin-top:18px">Draft text. Have a lawyer review it before launch.</p><button class="btn w" style="margin-top:12px" onclick="ov()">Close</button>`,1)}
+/* ===== auth ===== */
+function needCfg(){toast("Backend isn’t connected yet. Follow README step 3.")}
+function openAuth(su){if(!CFG_OK)return needCfg();const mx=new Date().toISOString().slice(0,10);
+ov(su?`<h3>Create your account</h3><p class="mu" style="margin:0 0 4px">Join DuoUp and find your squad.</p><input class="i" id="fn" placeholder="Full name" autocomplete="name"><div class="lb" style="margin:14px 0 0">Date of birth</div><input class="i" id="db" type="date" max="${mx}" style="margin-top:6px"><input class="i" id="em" type="email" placeholder="Email address" autocomplete="email"><input class="i" id="pw" type="password" placeholder="Create password (6+ characters)" autocomplete="new-password"><input class="i" id="pw2" type="password" placeholder="Confirm password" autocomplete="new-password"><button class="btn w glow" style="margin-top:18px" onclick="auth(1)">Create account</button><p class="sw">Already have an account? <a onclick="openAuth(0)">Login</a></p>`:
+`<h3>Welcome back</h3><p class="mu" style="margin:0 0 4px">Log in to continue.</p><input class="i" id="em" type="email" placeholder="Email address" autocomplete="email"><input class="i" id="pw" type="password" placeholder="Password" autocomplete="current-password"><button class="btn w" style="margin-top:18px" onclick="auth(0)">Log in</button><p class="sw"><a onclick="forgot()" style="font-weight:500">Forgot password?</a></p><p class="sw" style="margin-top:6px">New here? <a onclick="openAuth(1)">Sign up</a></p>`)}
+async function auth(su){const e=$("#em").value.trim().toLowerCase(),p=$("#pw").value;
+ if(!su){if(!e||!p)return toast("Enter your email and password");btn(1);const{data,error}=await SB.auth.signInWithPassword({email:e,password:p});btn(0);if(error)return toast(em(error));ov();return enter(data.user)}
+ const fn=$("#fn").value.trim(),db=$("#db").value;
+ if(fn.split(/\s+/).length<2)return toast("Please enter your full name");
+ if(!db)return toast("Please enter your date of birth");const a=ageOf(db);
+ if(a<13)return toast("DuoUp is for ages 13 and up");if(a>90)return toast("Please check your date of birth");
+ if(!/^\S+@\S+\.\S+$/.test(e))return toast("Enter a valid email address");
+ if(p.length<6)return toast("Password must be at least 6 characters");
+ if(p!=$("#pw2").value)return toast("Passwords don’t match");
+ btn(1);const{data,error}=await SB.auth.signUp({email:e,password:p,options:{data:{full_name:fn,dob:db}}});btn(0);
+ if(error)return toast(em(error));
+ if(!data.session){ov();return toast("Check your email to confirm your account, then log in")}
+ ov();enter(data.user)}
+async function forgot(){const e=$("#em").value.trim();if(!e)return toast("Enter your email first");const{error}=await SB.auth.resetPasswordForEmail(e,{redirectTo:location.origin+location.pathname});toast(error?em(error):"Password reset link sent to your email")}
+async function enter(user){S.uid=user.id;await loadMe();S.u.email=user.email;
+ if(S.status=="banned"){toast("This account has been suspended");return SB.auth.signOut()}
+ if(S.status=="deactivated")await SB.from("profiles").update({status:"active"}).eq("id",S.uid);
+ if(S.u.done){S.tab="d";S.dd=0;await Promise.all([loadUsed(),loadMatches()]);subscribeRT();go("app")}else{S.step=0;go("onb")}}
+async function loadMe(){const{data:p}=await SB.from("profiles").select("*").eq("id",S.uid).single(),{data:g}=await SB.from("game_ids").select("*").eq("user_id",S.uid).maybeSingle();if(!p)return;
+ Object.assign(S.u,{full:p.full_name,nick:p.nickname,dob:p.dob,age:ageOf(p.dob),gender:p.gender||"",interest:p.interest||"",intent:p.intents||[],pl:p.primary_lang||"",ol:p.other_langs||[],games:p.games||"",rank:p.rank||"",role:p.role||"",city:p.city||"",bio:p.bio||"",photos:(p.photos||[]).map(safe).filter(Boolean),done:p.onboarded,ids:{BGMI:g?g.bgmi_id:"",FF:g?g.ff_uid:""}});
+ S.tier=p.tier;S.isAdmin=p.is_admin;S.status=p.status}
+async function save(done){const u=S.u,r=await SB.from("profiles").update({nickname:u.nick.trim(),gender:u.gender,interest:u.interest,intents:u.intent,primary_lang:u.pl,other_langs:u.ol,games:u.games,rank:u.rank||null,role:u.role||null,city:u.city.trim(),bio:u.bio,photos:u.photos,...(done?{onboarded:true}:{})}).eq("id",S.uid),
+ r2=await SB.from("game_ids").upsert({user_id:S.uid,bgmi_id:u.ids.BGMI.trim(),ff_uid:u.ids.FF.trim()});
+ if(r.error||r2.error){toast(em(r.error||r2.error));return false}return true}
+function reset(){S.u=nu();S.uid=null;S.deck=[];S.dd=0;S.matches=[];S.msgs={};S.tier="";S.isAdmin=false;S.unread=0;S.open=null;S.used=0;if(RT){SB.removeChannel(RT);RT=null}go("land")}
+async function nx(){if(!S._ok())return toast(S.step==4?"Add your in-game ID to continue":"Please complete this step");
+ if(S.step<4){S.step++;return onb(1)}
+ const b=$(".ob .btn");b.disabled=true;if(!await save(true)){b.disabled=false;return}
+ S.u.done=true;S.tab="d";S.dd=0;toast("Welcome, "+dn()+"!");await Promise.all([loadUsed(),loadMatches()]);subscribeRT();go("app")}
+/* ===== data ===== */
+async function loadUsed(){const{data}=await SB.rpc("likes_today");S.used=data||0}
+async function loadDeck(){S.dl=true;if(S.screen=="app"&&S.tab=="d")view();const F=S.F,{data}=await SB.rpc("discover",{p_game:F.gm,p_gender:F.g,p_intent:F.i,p_lang:F.l,p_rank:F.r});S.dl=false;
+ S.deck=(data||[]).map(r=>({id:r.id,n:r.name,a:r.age,g:r.gender,gm:r.games,r:r.rank,ro:r.role,c:r.city,b:r.bio,ph:(r.photos||[]).map(safe).filter(Boolean),i:r.intents||[],l:r.langs||[],v:r.verified}));
+ if(S.screen=="app"&&S.tab=="d")view()}
+async function loadMatches(){const{data}=await SB.rpc("my_matches");S.matches=(data||[]).map(m=>({id:m.match_id,oid:m.other_id,n:m.name,ph:safe(m.photo),last:m.last_body,at:m.last_at||m.created_at})).sort((a,b)=>new Date(b.at)-new Date(a.at))}
+async function loadLiked(){const{data}=await SB.rpc("liked_me");if(data){S.liked={total:data.total,people:(data.people||[]).map(p=>({...p,photo:safe(p.photo)}))};if(S.tab=="x"&&S.screen=="app")view()}}
+let RT;
+function pushMsg(m){const a=S.msgs[m.match_id];if(a){if(a.some(x=>x.id==m.id))return false;a.push(m)}const mt=S.matches.find(x=>x.id==m.match_id);if(mt){mt.last=m.body;mt.at=m.created_at}return true}
+function addBubble(m){if(S.tab=="i"&&S.open==m.match_id&&$("#ms")){const d=document.createElement("div");d.className="m "+(m.sender_id==S.uid?"me":"");d.textContent=m.body;$("#ms").append(d);$("#ms").scrollTop=1e5}}
+function subscribeRT(){if(RT)return;RT=SB.channel("duoup")
+ .on("postgres_changes",{event:"INSERT",schema:"public",table:"messages"},pl=>{const m=pl.new;if(!pushMsg(m))return;if(S.tab=="i"&&S.open==m.match_id)addBubble(m);else{if(m.sender_id!=S.uid){S.unread++;toast("New message");refreshNav()}if(S.tab=="i"&&S.open==null&&S.screen=="app")view()}})
+ .on("postgres_changes",{event:"INSERT",schema:"public",table:"matches"},async()=>{await loadMatches();toast("🎉 You have a new match!");if(S.tab=="i"&&S.open==null&&S.screen=="app")view()}).subscribe()}
+/* ===== app ===== */
+const nav=()=>Object.keys(NM).map(k=>`<button class="${S.tab==k?"on":""}" onclick="tab('${k}')"><svg viewBox="0 0 24 24">${IC[k]}</svg>${NM[k]}${k=="i"&&S.unread?`<span class="dt">${S.unread}</span>`:""}</button>`).join("");
+const refreshNav=()=>{const n=document.querySelector(".bn div");if(n)n.innerHTML=nav()};
+function tab(k){S.tab=k;S.open=null;if(k=="i"){S.unread=0;loadMatches().then(()=>S.tab=="i"&&S.open==null&&view())}if(k=="x")loadLiked();app()}
+function app(){S.open=null;$("#root").innerHTML=`<div class="app"><div class="tb"><h2 class="lg">${S.tab=="d"?"Duo<i>Up</i>":NM[S.tab]}</h2>${S.tab=="d"?`<span class="pill">${S.tier?"♾ Unlimited":"♥ "+S.used+"/20"}</span><button class="pill" onclick="filt()">Filters${Object.values(S.F).some(x=>x)?" •":""}</button>`:""}<button class="pill" onclick="menu()" aria-label="Menu">☰</button></div><div id="vw"></div></div><div class="bn"><div>${nav()}</div></div>`;view(1);if(S.tab=="d"&&!S.dd){S.dd=1;loadDeck()}}
+const bub=m=>`<div class="m ${m.sender_id==S.uid?"me":""}">${esc(m.body)}</div>`;
+function view(q){const v=$("#vw");if(!v)return;v.className="pad"+(q?" stg":"");
+if(S.tab=="d"){const p=S.deck[0];v.innerHTML=(minor()?`<p class="mu" style="font-size:13px;margin:0 0 10px">🛡️ Teen mode: friendship and squad only, players your age.</p>`:"")+(p?`<div class="pc" id="pc"><div class="ph" style="height:300px;${avs(p.n,p.ph[0])}">${ini(p.n,p.ph[0])}</div>${p.ph.length>1?`<div class="tgs">${p.ph.slice(1,5).map(u=>`<i style="background-image:url('${u}')"></i>`).join("")}</div>`:""}<div class="pb"><h2>${esc(p.n)}${p.v?" ✔":""}, ${p.a}</h2><div class="mu">${[p.c,p.gm,p.r,p.ro].filter(Boolean).map(esc).join(" · ")}</div>${p.b?`<p style="line-height:1.5">${esc(p.b)}</p>`:""}${p.i.map(x=>`<span class="tg">🎯 ${esc(x)}</span>`).join("")}${p.l.map(x=>`<span class="tg">🗣️ ${esc(x)}</span>`).join("")}<div style="margin-top:12px"><a style="color:var(--mu);font-weight:500;font-size:13px" onclick="rep('${p.id}')">Report or block</a></div></div></div><div class="act"><button class="rb" onclick="act(0)">✕</button><button class="rb y" onclick="act(1)">♥</button></div>`:S.dl?`<div class="sk"></div>`:`<div class="pl" style="text-align:center"><h3>No one new right now</h3><p class="mu">Try changing your filters, or check back soon as more players join.</p><button class="ghost" onclick="filt()">Open filters</button></div>`)}
+if(S.tab=="i"){if(S.open!==null){const m=S.matches.find(x=>x.id==S.open);if(!m){S.open=null;return view()}v.innerHTML=`<div style="display:flex;align-items:center;gap:10px"><button class="ghost" style="border:0;padding:6px 0;color:var(--ac)" onclick="S.open=null;view()">‹ Inbox</button><div class="av" style="width:36px;height:36px;font-size:16px;${avs(m.n,m.ph)}">${ini(m.n,m.ph)}</div><b style="margin-right:auto">${esc(m.n)}</b><button class="pill" onclick="showIds('${m.oid}')">Game IDs</button></div><div class="ms" id="ms">${(S.msgs[S.open]||[]).map(bub).join("")}</div><div style="display:flex;gap:8px"><input class="i" style="margin:0" id="mi" maxlength="1000" placeholder="Write a message" onkeydown="event.key=='Enter'&&snd()"><button class="btn" onclick="snd()">Send</button></div>`;$("#ms").scrollTop=1e5;return}
+v.innerHTML=S.matches.length?S.matches.map(m=>`<div class="li" onclick="openChat('${m.id}')"><div class="av" style="${avs(m.n,m.ph)}">${ini(m.n,m.ph)}</div><div style="min-width:0"><b>${esc(m.n)}</b><div class="mu" style="font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.last?esc(m.last):"You matched. Say hi 👋"}</div></div></div>`).join(""):`<div class="pl" style="text-align:center"><h3>No chats yet</h3><p class="mu">Like players in Discover. When it’s a match, your chat opens here.</p></div>`}
+if(S.tab=="x"){const L=S.liked;v.innerHTML=`<div class="pl"><h3>Free</h3><div class="pz">₹0</div><ul><li>20 likes per day</li><li>Filters and inbox</li></ul></div>
+<div class="pl hot"><h3>Premium ${S.tier=="Premium"?"✓":""}</h3><div class="pz">₹${PRICE.Premium}<small class="mu" style="font-size:14px"> /month</small></div><ul><li>Unlimited likes</li><li>See who liked you</li><li>One profile boost every month</li></ul><button class="btn w" onclick="buy('Premium')">${S.tier=="Premium"?"Active":"Get Premium"}</button></div>
+<div class="pl hot" style="border-color:var(--ac2)"><h3>Premium Max ${S.tier=="Max"?"✓":""}</h3><div class="pz">₹${PRICE.Max}<small class="mu" style="font-size:14px"> /month</small></div><ul><li>Everything in Premium</li><li>Weekly profile boost</li><li>Priority placement in Discover</li><li>Verified rank badge</li></ul><button class="btn w" style="background:var(--ac2)" onclick="buy('Max')">${S.tier=="Max"?"Active":"Get Max"}</button></div>
+<h3 style="margin:22px 0 10px">${L.total?L.total+(L.total>1?" people":" person")+" liked you":"Likes you receive show up here"}</h3><div class="bl ${S.tier?"":"lk"}">${S.tier?L.people.slice(0,8).map(p=>`<div style="${avs(p.name,p.photo)};color:#fff">${ini(p.name,p.photo)}<small>${esc(p.name)}, ${p.age}</small></div>`).join(""):Array(Math.min(L.total,4)).fill(0).map(()=>`<div>?<small>Hidden</small></div>`).join("")}</div>${!S.tier&&L.total?`<button class="btn w" style="margin-top:12px" onclick="buy('Premium')">Unlock with Premium</button>`:""}`}
+if(S.tab=="p"){const u=S.u,ph=u.photos;v.innerHTML=`<div class="pl" style="text-align:center"><div class="av" style="width:90px;height:90px;font-size:40px;margin:auto;${avs(u.full,ph[0])}">${ini(u.full,ph[0])}</div><h2 style="margin-top:10px;font-size:24px">${esc(dn())}, ${u.age}</h2><div class="mu">${esc(u.games||"")} · ${esc(u.pl||"")}${S.tier?" · "+S.tier:""}</div></div>
+<div class="pl"><div class="lb" style="margin-top:0">Photos (${ph.length}/6)</div><div class="pg3">${[0,1,2,3,4,5].map(i=>ph[i]?`<div class="ph3" style="background-image:url('${ph[i]}')">${i?"":"<em>Main</em>"}<button class="r" onclick="addPh(${i})" aria-label="Replace">↻</button><button class="x" onclick="delPh(${i})" aria-label="Delete">✕</button></div>`:(i==ph.length?`<button class="ph3 add" onclick="addPh(${i})">+</button>`:`<div class="ph3 off"></div>`)).join("")}</div><p class="mu" style="font-size:12px;margin:10px 0 0">Tap + to add, ↻ to replace, ✕ to delete.</p></div>
+<div class="pl"><div class="lb" style="margin-top:0">Nickname</div><input class="i" style="margin:0" maxlength="20" value="${esc(u.nick)}" placeholder="How others see you" oninput="S.u.nick=this.value"><div class="lb">City</div><input class="i" style="margin:0" maxlength="40" value="${esc(u.city)}" placeholder="Optional" oninput="S.u.city=this.value"><div class="lb">Bio</div><textarea class="i" style="margin:0" maxlength="160" placeholder="Tell players about your playstyle" oninput="S.u.bio=this.value;$('#bc').textContent=this.value.length+'/160'">${esc(u.bio)}</textarea><div class="mu" id="bc" style="font-size:12px;text-align:right;margin-top:4px">${u.bio.length}/160</div>
+<div class="lb">Looking for (pick any)</div>${INT().map(x=>chip(x,u.intent.includes(x),`tgl('intent','${x}')`)).join("")}<div class="lb">Interested in</div>${["Male","Female","Both"].map(x=>chip(x,u.interest==x,`pick('interest','${x}')`)).join("")}<div class="lb">Game</div>${gchips()}${idbox()}<div class="lb">Rank</div>${RANKS.map(x=>chip(x,u.rank==x,`pick('rank','${x}')`)).join("")}<div class="lb">Role</div>${ROLES.map(x=>chip(x,u.role==x,`pick('role','${x}')`)).join("")}${lchips()}<button class="btn w" style="margin-top:20px" onclick="saveBtn()">Save changes</button></div>`}}
+async function saveBtn(){if(!gamesOk())return toast("Add your in-game ID");if(await save(false))toast("Profile saved ✓")}
+/* photos: compressed in the browser, stored in Supabase Storage */
+function addPh(i){S.pi=i;$("#fi").click()}
+const squash=f=>new Promise((res,rej)=>{const im=new Image(),u=URL.createObjectURL(f);im.onload=()=>{const s=Math.min(1,1080/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=im.width*s;c.height=im.height*s;c.getContext("2d").drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);c.toBlob(b=>b?res(b):rej(),"image/jpeg",.85)};im.onerror=rej;im.src=u});
+const rmFile=u=>{const p=(u||"").split("/object/public/photos/")[1];if(p)SB.storage.from("photos").remove([p])};
+async function onPh(inp){const f=inp.files[0];inp.value="";if(!f||!f.type.startsWith("image/"))return toast("Please choose an image");toast("Uploading…");
+ try{const b=await squash(f),path=`${S.uid}/${Date.now()}.jpg`,{error}=await SB.storage.from("photos").upload(path,b,{contentType:"image/jpeg"});if(error)throw error;
+ const url=SB.storage.from("photos").getPublicUrl(path).data.publicUrl,a=S.u.photos;let old;if(S.pi<a.length){old=a[S.pi];a[S.pi]=url}else a.push(url);
+ const r=await SB.from("profiles").update({photos:a}).eq("id",S.uid);if(r.error)throw r.error;if(old)rmFile(old);view();toast("Photo saved")}catch(e){toast("Upload failed. Try another photo.")}}
+async function delPh(i){const[old]=S.u.photos.splice(i,1);await SB.from("profiles").update({photos:S.u.photos}).eq("id",S.uid);rmFile(old);view();toast("Photo deleted")}
+/* ===== actions ===== */
+async function act(like){const p=S.deck[0];if(!p)return;if(!S.tier&&like&&S.used>=20)return paywall();const c=$("#pc");c.classList.add(like?"or":"ol");
+ const{data,error}=await SB.rpc("swipe",{p_to:p.id,p_like:like});
+ if(error){c.classList.remove("or","ol");return toast("Couldn’t save that. Try again.")}
+ if(data.limit){c.classList.remove("or","ol");S.used=20;return paywall()}
+ S.deck.shift();if(like)S.used=data.used;
+ setTimeout(()=>{app();if(data.matched){toast("🎉 It’s a match with "+p.n+"!");loadMatches()}else if(like&&!S.tier&&S.used>=20)setTimeout(paywall,500);if(S.deck.length<3)loadDeck()},280)}
+function paywall(){ov(`<h3>You’ve used your 20 free likes today</h3><p class="mu">Go premium to keep connecting.</p><ul style="padding-left:18px;line-height:1.9"><li>Unlimited likes</li><li>See everyone who liked you</li><li>Profile boosts and priority placement</li><li>Verified rank badge (Max)</li></ul><button class="btn w glow" onclick="buy('Premium')">Premium · ₹${PRICE.Premium}/month</button><button class="btn w" style="margin-top:10px;background:var(--ac2)" onclick="buy('Max')">Premium Max · ₹${PRICE.Max}/month</button><button class="ghost w" style="margin-top:10px;border:0" onclick="ov()">Maybe later</button>`,1)}
+function buy(t){if(S.tier==t)return toast("This plan is already active");ov(`<h3>Get ${t}</h3><p class="mu">₹${PRICE[t]}/month. Online payments are being set up. Send an upgrade request and we’ll activate your plan once payment is confirmed.</p><button class="btn w" onclick="reqUp('${t}')">Send upgrade request</button><button class="ghost w" style="margin-top:10px;border:0" onclick="ov()">Not now</button>`,1)}
+async function reqUp(t){const{error}=await SB.from("upgrade_requests").insert({user_id:S.uid,tier:t});ov();toast(error?em(error):"Request sent. We’ll activate your plan soon.")}
+async function rep(id){const{error}=await SB.rpc("report_user",{p_id:id,p_reason:"Reported from Discover"});if(error)return toast(em(error));S.deck=S.deck.filter(x=>x.id!=id);toast("Reported. Our team will review it.");view()}
+function filt(){const F=S.F,row=(k,a)=>a.map(x=>chip(x,F[k]==x,`F.${k}=F.${k}=='${x}'?'':'${x}';filt()`)).join("");
+ ov(`<h3>Filters</h3><div class="lb">Game</div>${row("gm",["BGMI","Free Fire"])}<div class="lb">Show me</div>${row("g",["Male","Female","Both"])}<div class="lb">Intent</div>${row("i",INT())}<div class="lb">Rank</div>${row("r",RANKS)}<div class="lb">Language</div>${row("l",LANGS)}<button class="btn w" style="margin-top:14px" onclick="ov();app();loadDeck()">Show results</button><button class="ghost w" style="margin-top:8px;border:0" onclick="S.F={gm:'',g:'',i:'',l:'',r:''};filt()">Reset</button>`,1)}
+async function openChat(id){S.open=id;if(!S.msgs[id]){const{data}=await SB.from("messages").select("*").eq("match_id",id).order("created_at").limit(200);S.msgs[id]=data||[]}view()}
+async function snd(){const i=$("#mi"),t=i.value.trim();if(!t)return;i.value="";i.focus();const{data,error}=await SB.from("messages").insert({match_id:S.open,sender_id:S.uid,body:t}).select().single();if(error){i.value=t;return toast("Message not sent")}if(pushMsg(data))addBubble(data)}
+async function showIds(oid){const{data}=await SB.from("game_ids").select("*").eq("user_id",oid).maybeSingle(),row=(l,v)=>v?`<div class="li" style="margin-top:10px"><div style="flex:1"><div class="mu" style="font-size:12px">${l}</div><b>${esc(v)}</b></div><button class="ghost sm" onclick="navigator.clipboard.writeText('${esc(v).replace(/'/g,"")}');toast('Copied')">Copy</button></div>`:"";
+ ov(`<h3>Game IDs</h3>${row("BGMI ID",data&&data.bgmi_id)}${row("Free Fire UID",data&&data.ff_uid)}${data&&(data.bgmi_id||data.ff_uid)?"":'<p class="mu">No IDs shared yet.</p>'}<button class="ghost w" style="margin-top:14px;border:0" onclick="ov()">Close</button>`,1)}
+/* ===== menu / settings ===== */
+function menu(){ov(`<h3>Menu</h3><div class="mn">${[["⚙️","Settings","settings()"],["🔒","Privacy Policy","doc('privacy')"],["📄","Terms &amp; Conditions","doc('terms')"],["✉️","Contact us","contact()"],...(S.isAdmin?[["🛠️","Admin panel","S.at='o';go('admin')"]]:[])].map(m=>`<button onclick="${m[2]}"><span>${m[0]}</span>${m[1]}</button>`).join("")}</div>`,1)}
+function settings(){ov(`<h3>Settings</h3><div class="lb">Theme</div>${THEMES.map(t=>chip(t[1],S.theme==t[0],`setTheme('${t[0]}');settings()`)).join("")}<div class="lb">Account</div><div class="mn"><button onclick="chPw()"><span>🔑</span>Change password</button><button onclick="confirmBox('Deactivate account?','Your profile will be hidden. Log in anytime to reactivate.','Deactivate','deact()')"><span>⏸️</span>Deactivate account</button><button style="color:#e5484d" onclick="confirmBox('Delete account?','This permanently deletes your profile, photos and chats. This can’t be undone.','Delete forever','delAcc()')"><span>🗑️</span>Delete account</button><button onclick="out()"><span>🚪</span>Log out</button></div>`,1)}
+function confirmBox(t,m,b,fn){ov(`<h3>${t}</h3><p class="mu">${m}</p><button class="btn w" style="background:#e5484d;color:#fff" onclick="${fn}">${b}</button><button class="ghost w" style="margin-top:10px;border:0" onclick="settings()">Cancel</button>`,1)}
+const out=()=>SB.auth.signOut();
+async function deact(){await SB.from("profiles").update({status:"deactivated"}).eq("id",S.uid);toast("Account deactivated");out()}
+async function delAcc(){const{data}=await SB.storage.from("photos").list(S.uid);if(data&&data.length)await SB.storage.from("photos").remove(data.map(f=>`${S.uid}/${f.name}`));const{error}=await SB.rpc("delete_me");if(error)return toast(em(error));toast("Account deleted");out()}
+function chPw(){ov(`<h3>Change password</h3><input class="i" id="p0" type="password" placeholder="Current password"><input class="i" id="p1" type="password" placeholder="New password (6+ characters)"><input class="i" id="p2" type="password" placeholder="Confirm new password"><button class="btn w" style="margin-top:16px" onclick="savePw()">Update password</button><button class="ghost w" style="margin-top:10px;border:0" onclick="settings()">Cancel</button>`,1)}
+async function savePw(){const a=$("#p0").value,b=$("#p1").value;if(b.length<6)return toast("New password needs 6+ characters");if(b==a)return toast("Choose a different password");if(b!=$("#p2").value)return toast("Passwords don’t match");
+ const{error:e1}=await SB.auth.signInWithPassword({email:S.u.email,password:a});if(e1)return toast("Current password is incorrect");const{error}=await SB.auth.updateUser({password:b});if(error)return toast(em(error));ov();toast("Password updated")}
+function newPw(){ov(`<h3>Set a new password</h3><input class="i" id="p1" type="password" placeholder="New password (6+ characters)"><button class="btn w" style="margin-top:16px" onclick="setNew()">Save password</button>`,1)}
+async function setNew(){const b=$("#p1").value;if(b.length<6)return toast("Password needs 6+ characters");const{error}=await SB.auth.updateUser({password:b});if(error)return toast(em(error));ov();toast("Password updated")}
+function contact(){ov(`<h3>Contact us</h3><p class="mu" style="margin:0">Questions, feedback or a problem? Send us a message.</p><input class="i" id="ce" type="email" placeholder="Your email" value="${esc(S.u.email)}"><textarea class="i" id="cm" maxlength="2000" placeholder="How can we help?"></textarea><button class="btn w" style="margin-top:14px" onclick="sendContact()">Send message</button>`,1)}
+async function sendContact(){const m=$("#cm").value.trim(),e=$("#ce").value.trim();if(!m)return toast("Please write a message");if(!CFG_OK)return needCfg();const{error}=await SB.from("contact_messages").insert({user_id:S.uid,email:e,message:m});if(error)return toast(em(error));ov();toast("Message sent. We’ll reply by email.")}
+/* ===== admin (needs profiles.is_admin = true) ===== */
+const aframe=b=>`<div class="app"><div class="tb"><h2 class="lg">Admin panel</h2><button class="pill" onclick="go('app')">Exit</button></div><div class="pad" style="padding-bottom:0">${[["o","Overview"],["u","Users"],["r","Reports"],["q","Upgrades"]].map(t=>chip(t[1],S.at==t[0],`S.at='${t[0]}';admin()`)).join("")}</div><div class="pad stg">${b}</div></div>`;
+async function admin(){const A=S.at;$("#root").innerHTML=aframe('<p class="mu">Loading…</p>');let b="";
+ if(A=="o"){const{data:s,error}=await SB.rpc("admin_stats");if(error){S.screen="app";return toast("Admins only")}const mx=Math.max(1,s.bgmi,s.ff);
+  b=`<div class="ag">${[["Total users",s.users],["Banned",s.banned],["Open reports",s.reports],["Premium members",s.premium],["Matches",s.matches],["Messages",s.messages]].map(x=>`<div class="pl"><div class="mu" style="font-size:13px">${x[0]}</div><div class="pz">${x[1]}</div></div>`).join("")}</div><div class="pl"><h3>Players by game</h3>${[["BGMI",s.bgmi],["Free Fire",s.ff]].map(g=>`<div class="mu" style="margin-top:12px">${g[0]} · ${g[1]}</div><div class="bar"><i style="width:${g[1]/mx*100}%"></i></div>`).join("")}</div>`}
+ if(A=="u"){const{data}=await SB.from("profiles").select("id,full_name,nickname,dob,games,status,verified,tier").order("created_at",{ascending:false}).limit(100);
+  b=(data||[]).map(p=>`<div class="li"><div style="flex:1;min-width:0"><b>${esc(p.nickname||p.full_name||"New user")}${p.verified?" ✔":""}</b><div class="mu" style="font-size:13px">${p.dob?ageOf(p.dob):"?"} · ${esc(p.games||"—")} · ${p.tier||"Free"}${p.status!="active"?" · "+p.status:""}</div></div><button class="ghost sm" onclick="adm('${p.id}',{verified:${!p.verified}})">${p.verified?"Unverify":"Verify"}</button><button class="ghost sm" style="color:#e5484d;margin-left:6px" onclick="adm('${p.id}',{status:'${p.status=="banned"?"active":"banned"}'})">${p.status=="banned"?"Unban":"Ban"}</button></div>`).join("")||'<p class="mu">No users yet.</p>'}
+ if(A=="r"){const{data}=await SB.from("reports").select("id,reason,created_at,reported_id,reporter:profiles!reporter_id(full_name),reported:profiles!reported_id(full_name)").eq("status","open").order("created_at",{ascending:false});
+  b=(data||[]).map(r=>`<div class="li"><div style="flex:1;min-width:0"><b>${esc(r.reported?r.reported.full_name:"Unknown")}</b><div class="mu" style="font-size:13px">Reported by ${esc(r.reporter?r.reporter.full_name:"Unknown")} · ${new Date(r.created_at).toLocaleDateString()}</div></div><button class="ghost sm" onclick="rpt('${r.reported_id}',${r.id},0)">Dismiss</button><button class="ghost sm" style="color:#e5484d;margin-left:6px" onclick="rpt('${r.reported_id}',${r.id},1)">Ban</button></div>`).join("")||`<div class="pl" style="text-align:center"><h3>No open reports</h3></div>`}
+ if(A=="q"){const{data}=await SB.from("upgrade_requests").select("id,tier,user_id,created_at,p:profiles!user_id(full_name)").eq("status","open").order("created_at");
+  b=(data||[]).map(r=>`<div class="li"><div style="flex:1;min-width:0"><b>${esc(r.p?r.p.full_name:"Unknown")}</b><div class="mu" style="font-size:13px">Wants ${r.tier} · ${new Date(r.created_at).toLocaleDateString()}</div></div><button class="ghost sm" onclick="upg(${r.id},'${r.user_id}','${r.tier}',1)">Approve</button><button class="ghost sm" style="margin-left:6px" onclick="upg(${r.id},'${r.user_id}','${r.tier}',0)">Reject</button></div>`).join("")||`<div class="pl" style="text-align:center"><h3>No open requests</h3><p class="mu">Approve only after you’ve received payment.</p></div>`}
+ if(S.screen=="admin")$("#root").innerHTML=aframe(b)}
+async function adm(id,patch){const{error}=await SB.from("profiles").update(patch).eq("id",id);if(error)toast(em(error));admin()}
+async function rpt(id,rid,ban){if(ban)await SB.from("profiles").update({status:"banned"}).eq("id",id);await SB.from("reports").update({status:ban?"actioned":"dismissed"}).eq("id",rid);admin()}
+async function upg(id,uid,tier,ok){if(ok)await SB.from("profiles").update({tier}).eq("id",uid);await SB.from("upgrade_requests").update({status:ok?"approved":"rejected"}).eq("id",id);admin()}
+function render(){S.screen=="land"?landing():S.screen=="onb"?onb(1):S.screen=="admin"?admin():app();scrollTo(0,0)}
+async function boot(){const{data:{session}}=await SB.auth.getSession();session?enter(session.user):render()}
+if(CFG_OK){SB.auth.onAuthStateChange((ev)=>{if(ev=="SIGNED_OUT")reset();if(ev=="PASSWORD_RECOVERY")setTimeout(newPw,400)});boot()}
+else{render();document.body.insertAdjacentHTML("beforeend",'<div class="cfgb">Backend not connected yet. Add your Supabase URL and key at the top of this file (README step 3).</div>')}
+</script></body></html>
