@@ -115,7 +115,7 @@ footer{padding:30px 0 50px;text-align:center;color:var(--mu);font-size:13px}
 <script>
 const $=s=>document.querySelector(s),T=[];
 /* ===== CONFIG: paste your Supabase values (Project Settings > API) ===== */
-const CFG={url:"PASTE_SUPABASE_URL",key:"PASTE_SUPABASE_ANON_KEY"},PRICE={Premium:99,Max:199};
+const CFG={url:"https://kkccvcreilwfukedrjpj.supabase.co",key:"sb_publishable_FRA4ZAJWd5JlrAWtil21iw_FfuuvdEk"},PRICE={Premium:99,Max:199};
 const CFG_OK=!CFG.url.startsWith("PASTE"),SB=CFG_OK?window.supabase.createClient(CFG.url,CFG.key):null;
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const LANGS=["Hindi","English","Bengali","Marathi","Telugu","Tamil","Gujarati","Urdu","Kannada","Odia","Malayalam","Punjabi","Assamese","Maithili","Santali","Kashmiri","Nepali","Sindhi","Konkani","Dogri","Manipuri","Bodo","Sanskrit"];
